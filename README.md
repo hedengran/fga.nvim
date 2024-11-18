@@ -30,6 +30,10 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 }
 ```
 
+## Tree-sitter Setup
+
+If installation of tree-sitter grammar, just run `TSInstall fga`, once the plugin has been loaded.
+
 ## LSP Server Setup
 
 To setup the LSP server:

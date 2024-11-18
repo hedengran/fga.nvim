@@ -14,6 +14,7 @@ local function install_treesitter_grammer()
 			install_info = {
 				url = "https://github.com/matoous/tree-sitter-fga",
 				files = { "src/parser.c" },
+				branch = "main",
 				generate_requires_npm = false,
 				requires_generate_from_grammar = false,
 			},
@@ -27,7 +28,7 @@ local function install_treesitter_grammer()
 	vim.fn.mkdir(queries_path, "p")
 
 	-- Download and set up the highlights query
-	local highlights_url = "https://raw.githubusercontent.com/matoous/tree-sitter-fga/master/queries/highlights.scm"
+	local highlights_url = "https://raw.githubusercontent.com/matoous/tree-sitter-fga/main/queries/highlights.scm"
 	local highlights_path = queries_path .. "/highlights.scm"
 
 	-- Download highlights.scm if it doesn't exist
