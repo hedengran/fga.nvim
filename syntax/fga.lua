@@ -16,16 +16,9 @@ vim.cmd('syntax match fgaDelimiter "[\\[\\](),]"')
 vim.cmd('syntax match fgaComment " #.*$"')
 vim.cmd('syntax match fgaComment "^#.*$"')
 
--- Link to standard highlighting groups
-local links = {
-	fgaKeyword = "Keyword",
-	fgaType = "Type",
-	fgaOperator = "Operator",
-	fgaDefineWord = "Function",
-	fgaDelimiter = "Delimiter",
-	fgaComment = "Comment",
-}
-
-for from, to in pairs(links) do
-	vim.cmd(string.format("highlight default link %s %s", from, to))
-end
+vim.api.nvim_set_hl(0, "fgaKeyword", { link = "Keyword", default = true })
+vim.api.nvim_set_hl(0, "fgaType", { link = "Type", default = true })
+vim.api.nvim_set_hl(0, "fgaOperator", { link = "Operator", default = true })
+vim.api.nvim_set_hl(0, "fgaDefineWord", { link = "Function", default = true })
+vim.api.nvim_set_hl(0, "fgaDelimiter", { link = "Delimiter", default = true })
+vim.api.nvim_set_hl(0, "fgaComment", { link = "Comment", default = true })
