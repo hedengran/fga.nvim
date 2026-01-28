@@ -11,11 +11,10 @@ function M.setup(opts)
 	})
 
 	if opts.install_treesitter_grammar then
-		require("fga.treesitter").setup(opts)
+		require("fga.treesitter").setup()
 	end
 
-	-- Setup LSP
-	if opts.lsp_server ~= nil then
+	if opts.lsp_server then
 		require("fga.lsp").setup(opts)
 	end
 end
