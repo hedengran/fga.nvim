@@ -1,67 +1,61 @@
 # fga.nvim
 
-Neovim plugin for OpenFGA modeling language support.
+Neovim support for [OpenFGA](https://openfga.dev/) authorization models (`.fga` files).
 
 ## Features
 
-- Adds `.fga` as a file type
-- Comment/uncomment lines with "gcc"
-- Basic syntax highlighting for `.fga` files
-- Optional automatic installation of TreeSitter grammar for OpenFGA ([matoous/tree-sitter-fga](https://github.com/matoous/tree-sitter-fga))
-- Optional LSP integration
+- Filetype detection
+- Syntax highlighting (basic vim syntax, or tree-sitter)
+- LSP support (diagnostics, hover, etc.)
+- Comment toggling (`gcc`)
 
 ## Installation
 
-Using [lazy.nvim](https://github.com/folke/lazy.nvim):
-
 ```lua
+-- lazy.nvim
 {
     "hedengran/fga.nvim",
-    dependencies = {
-        "neovim/nvim-lspconfig", -- Optional, for LSP integration
-        "nvim-treesitter/nvim-treesitter", -- Optional, for enhanced syntax highlighting
+    opts = {
+        -- install_treesitter_grammar = true,
+        -- lsp_server = "/path/to/vscode-ext/server/out/server.node.js",
     },
-    config = function()
-        require("fga").setup({
-            install_treesitter_grammar = true,
-            lsp_server = "/path/to/vscode-ext/server/out/server.node.js",
-        })
-    end,
 }
 ```
 
-## Tree-sitter Setup
+## Tree-sitter
 
-If installation of tree-sitter grammar, just run `TSInstall fga`, once the plugin has been loaded.
+Requires [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter).
 
-## LSP Server Setup
+```lua
+opts = {
+    install_treesitter_grammar = true,
+}
+```
 
-To setup the LSP server:
+Then run `:TSInstall fga` after the plugin loads.
 
-1. Clone the OpenFGA VSCode extension:
+Uses [matoous/tree-sitter-fga](https://github.com/matoous/tree-sitter-fga).
+
+## LSP
+
+Requires [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig).
+
+The LSP server comes from the [OpenFGA VSCode extension](https://github.com/openfga/vscode-ext):
+
 ```bash
 git clone https://github.com/openfga/vscode-ext
 cd vscode-ext
+npm install && npm run compile
 ```
 
-2. Install dependencies and build:
-```bash
-npm install
-npm run compile
+Then point to it:
+
+```lua
+opts = {
+    lsp_server = "/path/to/vscode-ext/server/out/server.node.js",
+}
 ```
-
-3. The LSP server will be available at `vscode-ext/server/out/server.node.js`
-
-## Requirements
-
-- `nvim-lspconfig` (optional) for LSP support
-- `nvim-treesitter` (optional) for enhanced syntax highlighting
-
-## Credits
-
-- TreeSitter grammar by [matoous](https://github.com/matoous/tree-sitter-fga)
-- LSP server from [OpenFGA VSCode Extension](https://github.com/openfga/vscode-ext)
 
 ## License
 
-MIT License
+MIT
