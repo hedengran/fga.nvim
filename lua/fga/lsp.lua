@@ -4,7 +4,7 @@ function M.setup(opts)
 	opts = opts or {}
 
 	if not pcall(require, "lspconfig") then
-		vim.notify("lspconfig is required not installed", vim.log.levels.ERROR)
+		vim.notify("fga.nvim: lspconfig not installed", vim.log.levels.ERROR)
 		return
 	end
 
@@ -16,9 +16,8 @@ function M.setup(opts)
 			default_config = {
 				cmd = { "node", opts.lsp_server, "--stdio" },
 				filetypes = { "fga" },
-				root_dir = function(fname)
-					return util.find_git_ancestor(fname)
-				end,
+				root_dir = util.find_git_ancestor,
+				single_file_support = true,
 				settings = {},
 			},
 		}
