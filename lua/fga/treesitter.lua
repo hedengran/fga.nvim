@@ -1,14 +1,13 @@
 local M = {}
 
-local function install_treesitter_grammer()
-	-- Ensure Tree-sitter is available
-	if not pcall(require, "nvim-treesitter") then
-		vim.notify("nvim-treesitter not installed", vim.log.levels.ERROR)
+local function install_treesitter_grammar()
+	local ok, parsers = pcall(require, "nvim-treesitter.parsers")
+	if not ok then
+		vim.notify("fga.nvim: nvim-treesitter not installed", vim.log.levels.ERROR)
 		return
 	end
 
-	-- Register the parser
-	local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+	local parser_config = parsers.get_parser_configs()
 	if not parser_config.fga then
 		parser_config.fga = {
 			install_info = {
@@ -31,25 +30,25 @@ local function install_treesitter_grammer()
 	local highlights_url = "https://raw.githubusercontent.com/matoous/tree-sitter-fga/main/queries/highlights.scm"
 	local highlights_path = queries_path .. "/highlights.scm"
 
-	-- Download highlights.scm if it doesn't exist
 	if vim.fn.filereadable(highlights_path) == 0 then
-		vim.fn.system({
+		local result = vim.fn.system({
 			"curl",
 			"-fLo",
 			highlights_path,
 			"--create-dirs",
 			highlights_url,
 		})
+		if vim.v.shell_error ~= 0 then
+			vim.notify("fga.nvim: failed to download highlights.scm", vim.log.levels.WARN)
+		end
 	end
 
 	-- Add the plugin path to runtimepath so Neovim can find queries/fga/highlights.scm
 	vim.opt.runtimepath:append(plugin_path)
 end
 
-function M.setup(opts)
-	opts = opts or {}
-
-	install_treesitter_grammer()
+function M.setup()
+	install_treesitter_grammar()
 end
 
 return M
