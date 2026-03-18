@@ -24,7 +24,7 @@ Neovim support for [OpenFGA](https://openfga.dev/) authorization models (`.fga` 
 
 ## Tree-sitter
 
-Requires [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter).
+Requires Neovim >= 0.9. The parser is compiled and cached automatically on first use (requires `git` and a C compiler).
 
 ```lua
 opts = {
@@ -32,9 +32,10 @@ opts = {
 }
 ```
 
-Then run `:TSInstall fga` after the plugin loads.
-
 Uses [matoous/tree-sitter-fga](https://github.com/matoous/tree-sitter-fga).
+
+> **Note:** On Neovim < 0.9, basic syntax highlighting via `syntax/fga.lua` is
+> still available without tree-sitter.
 
 ## LSP
 
