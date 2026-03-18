@@ -39,40 +39,61 @@ run_test "filetype detection for .fga files" \
         assert(vim.bo.filetype == 'fga', 'expected fga filetype, got: ' .. vim.bo.filetype)
     "
 
-# ---- LSP ----
+# ---- LSP (lsp_cmd) ----
 
 echo ""
-echo "--- lsp ---"
+echo "--- lsp (lsp_cmd) ---"
 
-run_test "lsp setup runs without errors (native)" \
+run_test "lsp_cmd setup runs without errors" \
     nvim_lua "
-        require('fga').setup({ lsp_server = '/tmp/fake-server.js' })
+        require('fga').setup({ lsp_cmd = { 'openfga-lsp', '--stdio' } })
     "
 
-run_test "openfga lsp config is registered" \
+run_test "lsp_cmd: config is registered" \
     nvim_lua "
-        require('fga').setup({ lsp_server = '/tmp/fake-server.js' })
+        require('fga').setup({ lsp_cmd = { 'openfga-lsp', '--stdio' } })
         local config = vim.lsp.config['openfga']
         assert(config, 'openfga config not found in vim.lsp.config')
     "
 
-run_test "openfga config has correct filetypes" \
+run_test "lsp_cmd: has correct cmd" \
     nvim_lua "
-        require('fga').setup({ lsp_server = '/tmp/fake-server.js' })
+        require('fga').setup({ lsp_cmd = { 'openfga-lsp', '--stdio' } })
+        local config = vim.lsp.config['openfga']
+        assert(config.cmd[1] == 'openfga-lsp', 'expected openfga-lsp, got: ' .. tostring(config.cmd[1]))
+        assert(config.cmd[2] == '--stdio', 'expected --stdio, got: ' .. tostring(config.cmd[2]))
+    "
+
+run_test "lsp_cmd: has correct filetypes" \
+    nvim_lua "
+        require('fga').setup({ lsp_cmd = { 'openfga-lsp', '--stdio' } })
         local config = vim.lsp.config['openfga']
         assert(config.filetypes[1] == 'fga', 'expected fga filetype, got: ' .. tostring(config.filetypes[1]))
     "
 
-run_test "openfga config has correct cmd" \
+# ---- LSP (deprecated lsp_server) ----
+
+echo ""
+echo "--- lsp (deprecated lsp_server) ---"
+
+run_test "lsp_server still works (backwards compat)" \
     nvim_lua "
         require('fga').setup({ lsp_server = '/tmp/fake-server.js' })
         local config = vim.lsp.config['openfga']
+        assert(config, 'openfga config not found')
         assert(config.cmd[1] == 'node', 'expected node, got: ' .. tostring(config.cmd[1]))
         assert(config.cmd[2] == '/tmp/fake-server.js', 'expected server path, got: ' .. tostring(config.cmd[2]))
         assert(config.cmd[3] == '--stdio', 'expected --stdio, got: ' .. tostring(config.cmd[3]))
     "
 
-run_test "no error when lsp_server is not set" \
+run_test "lsp_cmd takes precedence over lsp_server" \
+    nvim_lua "
+        require('fga').setup({ lsp_cmd = { 'my-lsp', '--stdio' }, lsp_server = '/tmp/ignored.js' })
+        local config = vim.lsp.config['openfga']
+        assert(config.cmd[1] == 'my-lsp', 'expected lsp_cmd to win, got: ' .. tostring(config.cmd[1]))
+    "
+
+run_test "no error when neither lsp option is set" \
     nvim_lua "
         require('fga').setup({})
     "

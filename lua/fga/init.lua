@@ -14,7 +14,7 @@ function M.setup(opts)
 		require("fga.treesitter").setup()
 	end
 
-	if opts.lsp_server then
+	if opts.lsp_cmd or opts.lsp_server then
 		require("fga.lsp").setup(opts)
 	end
 end

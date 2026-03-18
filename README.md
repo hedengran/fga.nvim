@@ -17,7 +17,7 @@ Neovim support for [OpenFGA](https://openfga.dev/) authorization models (`.fga` 
     "hedengran/fga.nvim",
     opts = {
         -- install_treesitter_grammar = true,
-        -- lsp_server = "/path/to/vscode-ext/server/out/server.node.js",
+        -- lsp_cmd = { "node", "/path/to/vscode-ext/server/out/server.node.js", "--stdio" },
     },
 }
 ```
@@ -50,11 +50,19 @@ cd vscode-ext
 npm install && npm run compile
 ```
 
-Then point to it:
+Then point to it with `lsp_cmd`:
 
 ```lua
 opts = {
-    lsp_server = "/path/to/vscode-ext/server/out/server.node.js",
+    lsp_cmd = { "node", "/path/to/vscode-ext/server/out/server.node.js", "--stdio" },
+}
+```
+
+If you have the server available as an executable on your `$PATH`, you can pass it directly:
+
+```lua
+opts = {
+    lsp_cmd = { "openfga-lsp", "--stdio" },
 }
 ```
 
