@@ -39,7 +39,8 @@ Uses [matoous/tree-sitter-fga](https://github.com/matoous/tree-sitter-fga).
 
 ## LSP
 
-Requires [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig).
+On Neovim >= 0.11, LSP works natively with no extra plugins. On older versions,
+[nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) is required.
 
 The LSP server comes from the [OpenFGA VSCode extension](https://github.com/openfga/vscode-ext):
 
