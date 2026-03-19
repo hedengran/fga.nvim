@@ -9,13 +9,8 @@ local function resolve_cmd(opts)
 		return opts.lsp_cmd
 	end
 
-	-- Deprecated: lsp_server option
+	-- Legacy: lsp_server option (undocumented, kept for backwards compat)
 	if opts.lsp_server then
-		vim.notify(
-			"fga.nvim: `lsp_server` is deprecated, use `lsp_cmd` instead.\n"
-				.. '  lsp_cmd = { "node", "/path/to/server.node.js", "--stdio" }',
-			vim.log.levels.WARN
-		)
 		return { "node", opts.lsp_server, "--stdio" }
 	end
 
